@@ -1,0 +1,29 @@
+---
+- name: 'Update APT package cache'
+  apt: update_cache=yes
+  tags: slow
+
+- name: 'Upgrade APT to the lastest packages'
+  apt: upgrade=safe
+  tags: slow
+
+- name: install additional packages
+  apt: pkg="{{ item }}" state=present
+  with_items: "{{ packages.extra }}"
+  tags: packages
+
+- name: configure sshd
+  copy: src=sshd_config dest=/etc/ssh/sshd_config owner=root group=root mode=0644
+  notify:
+    - restart sshd
+  tags:
+    - networking
+    - ssh
+
+- name: load ipv6 module
+  template: src=modules dest=/etc/modules
+  tags: networking
+
+- name: modprobe ipv6
+  modprobe: name=ipv6 state=present
+  tags: networking

@@ -1,0 +1,9 @@
+---
+
+remote_syslog2:
+  files:
+    - /var/log/dpkg.log
+    - /var/log/syslog
+    - /var/log/auth.log
+  host: logn.papertrailapp.com
+  port: 12345

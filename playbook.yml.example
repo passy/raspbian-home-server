@@ -1,0 +1,14 @@
+---
+
+- name: Ansible Playbook for setting up a brand new Raspberry Pi
+  hosts: pis
+  roles:
+    - role: pi
+      packages:
+        extra:
+          - mosh
+          - tmux
+          - exfat-fuse
+  remote_user: pi
+  become: yes
+  become_method: sudo

@@ -1,0 +1,31 @@
+---
+
+- name: Check if remote_syslog2 is installed
+  command: bash -c "dpkg-query -s remote-syslog2 | grep 'install ok installed'"
+  register: remote_syslog2_check_deb
+  failed_when: remote_syslog2_check_deb.rc > 1
+  changed_when: remote_syslog2_check_deb.rc == 1
+  tags: remote_syslog2
+
+- name: Copy remote_syslog2 deb
+  copy:
+    src=remote-syslog2_0.19_arm5.deb
+    dest="/tmp/remote_syslog2.deb"
+  when: remote_syslog2_check_deb.rc == 1
+  tags: remote_syslog2
+
+- name: Install remote_syslog2
+  apt: deb="/tmp/remote_syslog2.deb"
+  when: remote_syslog2_check_deb.rc == 1
+  tags: remote_syslog2
+
+- name: Remove tmp deb
+  file: dest="/tmp/remote_syslog2.deb" state=absent
+
+- name: Install remote_syslog2 config
+  template: src=log_files.yaml dest=/etc/log_files.yml mode=0644 owner=root
+  tags: remote_syslog2
+
+- name: Enable remote_syslog2
+  service: name=remote_syslog state=started enabled=true
+  tags: remote_syslog2
