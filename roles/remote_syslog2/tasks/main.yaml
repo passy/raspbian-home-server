@@ -21,6 +21,7 @@
 
 - name: Remove tmp deb
   file: dest="/tmp/remote_syslog2.deb" state=absent
+  tags: remote_syslog2
 
 - name: Install remote_syslog2 config
   template: src=log_files.yaml dest=/etc/log_files.yml mode=0644 owner=root
