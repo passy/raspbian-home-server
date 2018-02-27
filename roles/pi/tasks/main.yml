@@ -27,3 +27,9 @@
 - name: modprobe ipv6
   modprobe: name=ipv6 state=present
   tags: networking
+
+- name: set up network interfaces
+  template: src=wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant.conf owner=root group=root mode=0600
+  tags: networking
+  notify:
+    - restart networking
