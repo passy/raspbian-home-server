@@ -13,6 +13,17 @@
         country: GB
         ssid: wifi_ssid
         psk: 131e1e221f6e06e3911a2d11ff2fac9182665c004de85300f9cac208a6a80531
+    - role: remote_syslog2
+      remote_syslog2:
+        files:
+          - /var/log/dpkg.log
+          - /var/log/syslog
+          - /var/log/auth.log
+        host: logs12345.papertrailapp.com
+        port: 31337
+    - role: Benaud12.docker-pi
+      docker_pi_user: root
+    - role: monitoring
   remote_user: pi
   become: yes
   become_method: sudo
